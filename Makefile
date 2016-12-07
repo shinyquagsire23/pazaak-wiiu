@@ -55,12 +55,16 @@ $(BUILD):
 
 clean:
 	@echo "[RM]  $(notdir $(OUTPUT))"
-	@rm -rf $(BUILD) $(OUTPUT).elf $(OUTPUT).rpx $(OUTPUT).a
+	@rm -rf $(BUILD) $(OUTPUT).elf $(OUTPUT).rpx $(OUTPUT).a $(OUTPUT).woomy
+	@rm $(OUTPUT)/code/*.rpx
 
 else
 
 DEPENDS	:= $(OFILES:.o=.d)
 
+$(OUTPUT).woomy: $(OUTPUT).rpx
+	cp $(OUTPUT).rpx $(OUTPUT)/code/
+	makefst -out $(OUTPUT).woomy -name "Pazaak" -internal "Pazaak Application" -entry "pazaak" -icon "$(OUTPUT)/meta/iconTex.tga" $(OUTPUT)/
 $(OUTPUT).rpx: $(OUTPUT).elf
 $(OUTPUT).elf: $(OFILES)
 
